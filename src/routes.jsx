@@ -7,7 +7,7 @@ import {
   RectangleStackIcon,
   QueueListIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Section, Modules, Quiz, Students, ModuleProgress } from "@/pages/dashboard";
+import { Home, Profile, Section, Modules, Quiz, Students } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -52,11 +52,11 @@ export const routes = [
         path: "/quiz",
         element: <Quiz />,
       },
-      { //consist of students unfinished/finished module status
+      { //module progress
         icon: <TableCellsIcon {...icon} />,
         name: "module progress",
         path: "/modules",
-        element: <ModuleProgress />,
+        element: <Modules />,
       },
     ],
   },

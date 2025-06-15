@@ -19,7 +19,7 @@ import { sectionData, moduleProgressData } from "@/data";
 import { useNavigate } from "react-router-dom"; // For navigation
 import React, { useState } from "react";
 
-export function ModuleProgress() {
+export function Modules() {
 
   const navigate = useNavigate(); // Initialize useNavigate hook
   
@@ -125,4 +125,4 @@ export function ModuleProgress() {
   );
 }
 
-export default ModuleProgress;
+export default Modules;
