@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export function StatisticsCard({ color, icon, title, value, footer }) {
   return (
@@ -23,14 +24,39 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
         <Typography variant="small" className="font-normal text-blue-gray-600">
           {title}
         </Typography>
+
+        
         <Typography variant="h4" color="blue-gray">
           {value}
         </Typography>
+        
+
       </CardBody>
       {footer && (
-        <CardFooter className="border-t border-blue-gray-50 p-4">
+        /*<CardFooter className="border-t border-blue-gray-50 p-4">
           {footer}
+        </CardFooter>*/
+        <CardFooter className="border-t border-blue-gray-50 p-4">
+          {/* NOW WE BUILD THE FOOTER CONTENT WITH THE LINK HERE */}
+          <Typography className="font-normal text-blue-gray-600">
+            {footer.path ? ( // Check if footer.path exists
+              <Link
+                to={footer.path} // Use the path from the footer object
+                className={`font-normal ${footer.color} hover:underline cursor-pointer`} // Add styling for link appearance
+              >
+                <strong className={footer.color}>{footer.value}</strong>
+                &nbsp;{footer.label}
+              </Link>
+            ) : (
+              // If no path, render just the strong and label without a link
+              <>
+                <strong className={footer.color}>{footer.value}</strong>
+                &nbsp;{footer.label}
+              </>
+            )}
+          </Typography>
         </CardFooter>
+        
       )}
     </Card>
   );

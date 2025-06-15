@@ -5,7 +5,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 
 export function SignIn() {
@@ -14,16 +14,16 @@ export function SignIn() {
       <div className="w-full lg:w-3/5 mt-24">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
-          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
+          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your username and password to Sign In.</Typography>
         </div>
         <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-              Your email
+              Username
             </Typography>
             <Input
               size="lg"
-              placeholder="name@mail.com"
+              placeholder="Enter username"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -42,7 +42,7 @@ export function SignIn() {
               }}
             />
           </div>
-          <Checkbox
+          {/*<Checkbox
             label={
               <Typography
                 variant="small"
@@ -59,12 +59,15 @@ export function SignIn() {
               </Typography>
             }
             containerProps={{ className: "-ml-2.5" }}
-          />
+          />*/}
+          
+          <Link to="/dashboard/home">
           <Button className="mt-6" fullWidth>
             Sign In
           </Button>
+          </Link>
 
-          <div className="flex items-center justify-between gap-2 mt-6">
+          {/*<div className="flex items-center justify-between gap-2 mt-6">
             <Checkbox
               label={
                 <Typography
@@ -104,7 +107,7 @@ export function SignIn() {
               <img src="/img/twitter-logo.svg" height={24} width={24} alt="" />
               <span>Sign in With Twitter</span>
             </Button>
-          </div>
+          </div>*/}
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>

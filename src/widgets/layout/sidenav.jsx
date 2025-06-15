@@ -27,20 +27,21 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div
         className={`relative`}
       >
-        <Link to="/" className="py-6 px-8 text-center">
+        <Link to="/dashboard/home" className="py-6 px-8 text-center">
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
              <Avatar
                 src="/img/arsci.png"
-                alt="bruce-mars"
+                alt="arsci-logo"
                 size="xxl"
                 variant="box"
                 className="object-fill"
               />
           </Typography>
         </Link>
+
         <IconButton
           variant="text"
           color="white"
@@ -52,6 +53,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
+      
       <div className="m-4">
         {routes.map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">

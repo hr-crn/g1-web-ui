@@ -1,26 +1,16 @@
 import {
   Card,
   CardBody,
-  CardHeader,
-  CardFooter,
   Avatar,
   Typography,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Switch,
   Tooltip,
-  Button,
 } from "@material-tailwind/react";
 import {
-  HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
-  Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
+
+import { ProfileInfoCard} from "@/widgets/cards";
+
 
 export function Profile() {
   return (
@@ -51,7 +41,7 @@ export function Profile() {
                 </Typography>
               </div>
             </div>
-            <div className="w-96">
+            {/*<div className="w-96">
               <Tabs value="app">
                 <TabsHeader>
                   <Tab value="app">
@@ -68,10 +58,10 @@ export function Profile() {
                   </Tab>
                 </TabsHeader>
               </Tabs>
-            </div>
+            </div>*/}
           </div>
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-            <div>
+            {/*<div>
               <Typography variant="h6" color="blue-gray" className="mb-3">
                 Web Tool Settings
               </Typography>
@@ -97,14 +87,14 @@ export function Profile() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>*/}
+            
             <ProfileInfoCard
               title="Profile Information"
               description=""
               details={{
                 "Name": "Hera Carino",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
+                username: "herascarino",
                 password: "*******"
               }}
               action={

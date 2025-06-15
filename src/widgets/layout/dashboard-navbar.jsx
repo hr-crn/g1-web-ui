@@ -83,7 +83,7 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
+          {/*<Link to="/auth/sign-in">
             <Button
               variant="text"
               color="blue-gray"
@@ -184,7 +184,7 @@ export function DashboardNavbar() {
             onClick={() => setOpenConfigurator(dispatch, true)}
           >
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
-          </IconButton>
+          </IconButton>*/}
         </div>
       </div>
     </Navbar>

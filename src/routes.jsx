@@ -7,7 +7,7 @@ import {
   RectangleStackIcon,
   QueueListIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Section, Notifications,Modules } from "@/pages/dashboard";
+import { Home, Profile, Section, Modules, Quiz, Students, ModuleProgress } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -24,51 +24,55 @@ export const routes = [
         path: "/home",
         element: <Home />,
       },
-      {
+      { //teacher profile
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
         path: "/profile",
         element: <Profile />,
       },
-      {
+      { //all sections and section creation
         icon: <TableCellsIcon {...icon} />,
-        name: "students",
+        name: "sections",
         path: "/section",
         element: <Section />,
       },
-      {
+      { //all students and student creation
         icon: <QueueListIcon {...icon} />,
-        name: "quiz",
-        path: "/tables",
-        element: <Notification />,
+        name: "students",
+        path: "/students",
+        element: <Students />,
       },
+      {},
       {
+        name:"STUDENT PROGRESS",
+      },
+      { //consist of all student quiz score
+        icon: <QueueListIcon {...icon} />,
+        name: "quiz progress",
+        path: "/quiz",
+        element: <Quiz />,
+      },
+      { //consist of students unfinished/finished module status
         icon: <TableCellsIcon {...icon} />,
-        name: "Modules",
+        name: "module progress",
         path: "/modules",
-        element: <Modules />,
-      },
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
+        element: <ModuleProgress />,
       },
     ],
   },
   {
-    title: "auth pages",
+    title: "",
     layout: "auth",
     pages: [
       {
-        icon: <ServerStackIcon {...icon} />,
-        name: "sign in",
+        
+        name: "",
         path: "/sign-in",
         element: <SignIn />,
       },
       {
-        icon: <RectangleStackIcon {...icon} />,
-        name: "sign up",
+        
+        name: "",
         path: "/sign-up",
         element: <SignUp />,
       },
