@@ -5,7 +5,7 @@ import {
   BookOpenIcon,
 } from "@heroicons/react/24/solid";
 
-export const statisticsCardsData = [
+export const homeCardsData = [
   {
     color: "gray",
     icon: SwatchIcon,
@@ -27,7 +27,7 @@ export const statisticsCardsData = [
       color: "text-green-500",
       value: "View Students",
       label: "",
-      path: "/dashboard/student",
+      path: "/dashboard/students",
     },
   },
   {
@@ -49,11 +49,11 @@ export const statisticsCardsData = [
     value: "4",
     footer: {
       color: "text-green-500",
-      value: "View Modules",
+      value: "View Progress",
       label: "",
       path: "/dashboard/modules",
     },
   },
 ];
 
-export default statisticsCardsData;
+export default homeCardsData;

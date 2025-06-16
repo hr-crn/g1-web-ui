@@ -7,8 +7,8 @@ import {
   RectangleStackIcon,
   QueueListIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Section, Modules, Quiz, Students } from "@/pages/dashboard";
-import { SignIn, SignUp } from "@/pages/auth";
+import { Home, Profile, Section, Module, Quiz, Students } from "@/pages/dashboard";
+
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -55,29 +55,11 @@ export const routes = [
       { //module progress
         icon: <TableCellsIcon {...icon} />,
         name: "module progress",
-        path: "/modules",
-        element: <Modules />,
+        path: "/module",
+        element: <Module />,
       },
     ],
-  },
-  {
-    title: "",
-    layout: "auth",
-    pages: [
-      {
-        
-        name: "",
-        path: "/sign-in",
-        element: <SignIn />,
-      },
-      {
-        
-        name: "",
-        path: "/sign-up",
-        element: <SignUp />,
-      },
-    ],
-  },
+  }
 ];
 
 export default routes;

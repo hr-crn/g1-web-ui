@@ -3,23 +3,12 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
-  // --- New Imports for Menu ---
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
-import { sectionData, moduleProgressData } from "@/data";
+import { moduleProgressData } from "@/data";
 import { useNavigate } from "react-router-dom"; // For navigation
 import React, { useState } from "react";
 
-export function Modules() {
+export function Module() {
 
   const navigate = useNavigate(); // Initialize useNavigate hook
   
@@ -32,8 +21,8 @@ export function Modules() {
   const handleViewProgress = (moduleName) => {
     const moduleSlug = getModuleSlug(moduleName);
     // Navigates to e.g., /introduction-to-react-progress
-    navigate(`/${moduleSlug}-progress`);
-    console.log(`Navigating to /${moduleSlug}-progress`);
+    navigate(`/module-progress/${moduleSlug}-progress`);
+    console.log(`Navigating to /module-progress/${moduleSlug}-progress`);
   };
 
 
@@ -125,4 +114,4 @@ export function Modules() {
   );
 }
 
-export default Modules;
+export default Module; 
