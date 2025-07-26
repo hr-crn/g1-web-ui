@@ -22,13 +22,6 @@ export function Profile() {
         <CardBody className="p-4">
           <div className="mb-10 flex items-center justify-between flex-wrap gap-6">
             <div className="flex items-center gap-6">
-              <Avatar
-                src="/img/curtis.jpeg"
-                alt="bruce-mars"
-                size="xl"
-                variant="rounded"
-                className="rounded-lg shadow-lg shadow-blue-gray-500/40"
-              />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
                   Hera Carino
@@ -41,6 +34,7 @@ export function Profile() {
                 </Typography>
               </div>
             </div>
+<<<<<<< Updated upstream
             {/*<div className="w-96">
               <Tabs value="app">
                 <TabsHeader>
@@ -88,6 +82,12 @@ export function Profile() {
                 ))}
               </div>
             </div>*/}
+=======
+            
+          </div>
+          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
+            
+>>>>>>> Stashed changes
             
             <ProfileInfoCard
               title="Profile Information"
@@ -106,25 +106,6 @@ export function Profile() {
             
           </div>
 
-          {/* <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
-              </Typography>
-              <ul className="flex flex-col gap-6">
-                {conversationsData.map((props) => (
-                  <MessageCard
-                    key={props.name}
-                    {...props}
-                    action={
-                      <Button variant="text" size="sm">
-                        reply
-                      </Button>
-                    }
-                  />
-                ))}
-              </ul>
-            </div> */}
-         
         </CardBody>
       </Card>
     </>

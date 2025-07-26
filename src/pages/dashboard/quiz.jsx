@@ -3,6 +3,7 @@ import {
   CardHeader,
   CardBody,
   Typography,
+<<<<<<< Updated upstream
   Avatar,
   Chip,
   Tooltip,
@@ -18,6 +19,12 @@ import { EllipsisVerticalIcon, PlusCircleIcon } from "@heroicons/react/24/outlin
 import { quizProgressData } from "@/data";
 import { useNavigate } from "react-router-dom"; // For navigation
 import React, { useState } from "react";
+=======
+} from "@material-tailwind/react";
+import { quizProgressData } from "@/data";
+import { useNavigate } from "react-router-dom"; // For navigation
+import React from "react";
+>>>>>>> Stashed changes
 
 export function Quiz() {
 

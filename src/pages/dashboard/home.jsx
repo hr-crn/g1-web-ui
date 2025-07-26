@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< Updated upstream
 import {
   Typography,
   Card,
@@ -40,6 +41,15 @@ export function Home() {
   return (
     // Wrap everything in a single parent div or a React Fragment (<></>)
     <div className="min-h-screen"> {/* Added a wrapper div */}
+=======
+import { StatisticsCard } from "@/widgets/cards";
+import { homeCardsData } from "@/data";
+
+
+export function Home() {
+  return (
+    <div className="min-h-screen"> 
+>>>>>>> Stashed changes
       <div className="mt-12">
         <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
           {homeCardsData.map(({ icon, title, footer, ...rest }) => (

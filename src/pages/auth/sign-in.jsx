@@ -1,7 +1,5 @@
 import {
-  Card,
   Input,
-  Checkbox,
   Button,
   Typography,
 } from "@material-tailwind/react";
@@ -42,6 +40,7 @@ export function SignIn() {
               }}
             />
           </div>
+<<<<<<< Updated upstream
           {/*<Checkbox
             label={
               <Typography
@@ -60,6 +59,9 @@ export function SignIn() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />*/}
+=======
+        
+>>>>>>> Stashed changes
           
           <Link to="/dashboard/home">
           <Button className="mt-6" fullWidth>
@@ -67,6 +69,7 @@ export function SignIn() {
           </Button>
           </Link>
 
+<<<<<<< Updated upstream
           {/*<div className="flex items-center justify-between gap-2 mt-6">
             <Checkbox
               label={
@@ -108,6 +111,9 @@ export function SignIn() {
               <span>Sign in With Twitter</span>
             </Button>
           </div>*/}
+=======
+          
+>>>>>>> Stashed changes
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>
