@@ -3,28 +3,10 @@ import {
   CardHeader,
   CardBody,
   Typography,
-<<<<<<< Updated upstream
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
-  // --- New Imports for Menu ---
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-} from "@material-tailwind/react";
-import { EllipsisVerticalIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
-import { quizProgressData } from "@/data";
-import { useNavigate } from "react-router-dom"; // For navigation
-import React, { useState } from "react";
-=======
 } from "@material-tailwind/react";
 import { quizProgressData } from "@/data";
 import { useNavigate } from "react-router-dom"; // For navigation
 import React from "react";
->>>>>>> Stashed changes
 
 export function Quiz() {
 

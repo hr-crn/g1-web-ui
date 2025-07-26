@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
 // src/pages/AddSection.jsx
 
-=======
->>>>>>> Stashed changes
 import React, { useState } from "react";
 import {
   Card,
@@ -28,17 +25,10 @@ function AddSection() {
 
     console.log("Attempting to create section with name:", sectionName);
 
-<<<<<<< Updated upstream
-    // Simulate success
-    alert(`Section "${sectionName}" created successfully! (Simulated)`);
-
-    // --- CHANGE THIS LINE ---
-=======
     
     alert(`Section "${sectionName}" created successfully! (Simulated)`);
 
    
->>>>>>> Stashed changes
     navigate('/dashboard/section'); // Redirect back to the dashboard/sections page
   };
 
