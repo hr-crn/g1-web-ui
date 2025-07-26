@@ -9,9 +9,5 @@ export * from "@/data/authors-table-data";
 export * from "@/data/section-data";
 export * from "@/data/students-data";
 export * from "@/data/quiz-progress-data";
-<<<<<<< Updated upstream
-export * from "@/data/module-progress-data";
-=======
 export * from "@/data/module-progress-data";
 export * from "@/data/view-progress-data";
->>>>>>> Stashed changes

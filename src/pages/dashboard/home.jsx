@@ -1,6 +1,6 @@
 import React from "react";
 import { StatisticsCard } from "@/widgets/cards";
-import { homeCardsData, projectsData,} from "@/data";
+import { homeCardsData } from "@/data";
 
 
 export function Home() {
@@ -13,9 +13,9 @@ export function Home() {
               key={title}
               {...rest}
               title={title}
-              icon={React.createElement(icon, {
+              icon={icon ? React.createElement(icon, {
                 className: "w-6 h-6 text-white",
-              })}
+              }) : null}
               footer={footer}
             />
           ))}
