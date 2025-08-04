@@ -8,3 +8,4 @@ export * from "@/pages/dashboard/view-scores";
 export * from "@/pages/dashboard/lock-module";
 export * from "@/pages/dashboard/view-progress";
 export * from "@/pages/dashboard/add-section";
+export * from "@/pages/dashboard/add-student";

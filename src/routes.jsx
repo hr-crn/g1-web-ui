@@ -42,10 +42,6 @@ export const routes = [
         path: "/students",
         element: <Students />,
       },
-      {},
-      {
-        name:"STUDENT PROGRESS",
-      },
       { //consist of all student quiz score
         icon: <QueueListIcon {...icon} />,
         name: "quiz progress",
