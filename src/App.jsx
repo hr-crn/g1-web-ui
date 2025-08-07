@@ -6,6 +6,9 @@ import { SignIn, SignUp } from "./pages/auth";
 import { LockModule } from "./pages/dashboard/lock-module";
 import ModuleProgress from "./pages/dashboard/view-progress";
 import AddSection from "./pages/dashboard/add-section";
+import EditSection from "./pages/dashboard/edit-section";
+import AddStudent from "./pages/dashboard/add-student";
+import EditStudent from "./pages/dashboard/edit-student";
 import { Section } from "./pages/dashboard/section";
 // Importing components from the pages directory.
 
@@ -22,6 +25,9 @@ function App() {
       <Route path="/module-progress/:progressSlug" element={<ModuleProgress />} />
       <Route path="/section" element={<Section />} />
       <Route path="/add-section" element={<AddSection />} />
+      <Route path="/edit-section/:sectionSlug" element={<EditSection />} />
+      <Route path="/add-student" element={<AddStudent />} />
+      <Route path="/edit-student/:studentSlug" element={<EditStudent />} />
       <Route path="*" element={<Navigate to="/auth/sign-in" replace />} />
     </Routes>
   );

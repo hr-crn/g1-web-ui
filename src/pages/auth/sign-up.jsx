@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 export function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export function SignUp() {
     const res = await fetch("https://dff9qunxy0.execute-api.ap-southeast-2.amazonaws.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstName, lastName, username, password }),
+      body: JSON.stringify({ firstName, lastName, email, username, password }),
     });
     if (res.ok) {
       alert("Registered!");
@@ -64,6 +65,20 @@ export function SignUp() {
               placeholder="Enter last name"
               value={lastName}
               onChange={e => setLastName(e.target.value)}
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+            <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
+              Email
+            </Typography>
+            <Input
+              type="email"
+              size="lg"
+              placeholder="Enter email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",

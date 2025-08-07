@@ -13,14 +13,43 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Input,
+  Button,
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
-import { sectionData, projectsData } from "@/data"; // Assuming projectsData is still needed here
+import {
+  EllipsisVerticalIcon,
+  PlusCircleIcon,
+  PencilIcon,
+  ArchiveBoxIcon,
+  LockClosedIcon,
+  UsersIcon
+} from "@heroicons/react/24/outline";
+import { sectionData as initialSectionData, projectsData } from "@/data"; // Assuming projectsData is still needed here
 import { useNavigate } from "react-router-dom"; // For navigation
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export function Section() {
   const navigate = useNavigate(); // Initialize useNavigate hook
+  const [sections, setSections] = useState(initialSectionData);
+  const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
+  const [newSectionName, setNewSectionName] = useState("");
+
+  // Load sections from localStorage on component mount
+  useEffect(() => {
+    const savedSections = localStorage.getItem('sections');
+    if (savedSections) {
+      setSections(JSON.parse(savedSections));
+    }
+  }, []);
+
+  // Save sections to localStorage whenever sections change
+  useEffect(() => {
+    localStorage.setItem('sections', JSON.stringify(sections));
+  }, [sections]);
 
   // Helper function to create a URL-friendly slug from the name
   const getSlug = (name) => {
@@ -29,21 +58,81 @@ export function Section() {
 
   const handleAddSection = () => {
     console.log("Add Section button clicked!");
-    navigate("/add-section"); // This is where the navigation happens
+    setIsAddSectionOpen(true);
   };
 
-  // --- NEW: Handler for "Manage Module" ---
-  const handleManageModule = (sectionName) => {
+  const handleCreateSection = (e) => {
+    e.preventDefault();
+
+    if (newSectionName.trim() === "") {
+      alert("Section Name cannot be empty!");
+      return;
+    }
+
+    // Check if section name already exists
+    const sectionExists = sections.some(
+      section => section.sectionName.toLowerCase() === newSectionName.trim().toLowerCase()
+    );
+
+    if (sectionExists) {
+      alert("A section with this name already exists!");
+      return;
+    }
+
+    // Create new section object
+    const newSection = {
+      sectionName: newSectionName.trim(),
+      noOfStudents: 0,
+      archived: false
+    };
+
+    // Add new section to existing sections
+    const updatedSections = [...sections, newSection];
+    setSections(updatedSections);
+
+    console.log("Section created successfully:", newSection);
+    alert(`Section "${newSectionName}" created successfully!`);
+
+    // Close modal and reset form
+    setIsAddSectionOpen(false);
+    setNewSectionName("");
+  };
+
+  const handleCancelAddSection = () => {
+    setIsAddSectionOpen(false);
+    setNewSectionName("");
+  };
+
+  // Handler for Edit Section
+  const handleEditSection = (sectionName) => {
     const sectionSlug = getSlug(sectionName);
-    // Navigate to a dynamic URL, e.g., /lock-module/section-a
-    navigate(`/lock-module/${sectionSlug}`);
-    console.log(`Navigating to /lock-module/${sectionSlug}`);
+    navigate(`/edit-section/${sectionSlug}`);
+    console.log(`Navigating to edit section: ${sectionName}`);
   };
 
-  // --- NEW: Placeholder for handleDeleteSection (if not already defined elsewhere) ---
-  const handleDeleteSection = (sectionName) => {
-    console.log(`Deleting section: ${sectionName}`);
-    // Implement your actual delete logic here (e.g., API call, state update)
+  // Handler for Archive Section
+  const handleArchiveSection = (sectionName) => {
+    const updatedSections = sections.map(section =>
+      section.sectionName === sectionName
+        ? { ...section, archived: !section.archived }
+        : section
+    );
+    setSections(updatedSections);
+    console.log(`Toggling archive status for section: ${sectionName}`);
+  };
+
+  // Handler for Lock/Unlock Module
+  const handleLockUnlockModule = (sectionName) => {
+    const sectionSlug = getSlug(sectionName);
+    navigate(`/lock-module/${sectionSlug}`);
+    console.log(`Navigating to lock/unlock modules for section: ${sectionName}`);
+  };
+
+  // Handler for View Students
+  const handleViewStudents = (sectionName) => {
+    // Navigate to students page with section filter
+    navigate(`/dashboard/students?section=${encodeURIComponent(sectionName)}`);
+    console.log(`Viewing students for section: ${sectionName}`);
   };
 
 
@@ -90,16 +179,16 @@ export function Section() {
               </tr>
             </thead>
             <tbody>
-              {sectionData.map(
-                ({ sectionName, noOfStudents }, key) => {
+              {sections.map(
+                ({ sectionName, noOfStudents, archived }, key) => {
                   const className = `py-3 px-5 ${
-                    key === sectionData.length - 1
+                    key === sections.length - 1
                       ? ""
                       : "border-b border-blue-gray-50"
                   }`;
 
                   return (
-                    <tr key={sectionName}>
+                    <tr key={sectionName} className={archived ? "opacity-50" : ""}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
                           <Typography
@@ -108,6 +197,14 @@ export function Section() {
                             className="font-bold"
                           >
                             {sectionName}
+                            {archived && (
+                              <Chip
+                                size="sm"
+                                value="Archived"
+                                color="gray"
+                                className="ml-2 inline-block"
+                              />
+                            )}
                           </Typography>
                         </div>
                       </td>
@@ -135,24 +232,35 @@ export function Section() {
                           </MenuHandler>
                           <MenuList> {/* The dropdown list of options */}
                             <MenuItem
-                              onClick={() => navigate(`/edit-section/${getSlug(sectionName)}`)}
-                              className="text-green-500 hover:bg-green-50 hover:text-green-700" // Corrected hover color
+                              onClick={() => handleEditSection(sectionName)}
+                              className="flex items-center gap-2 text-green-500 hover:bg-green-50 hover:text-green-700"
                             >
+                              <PencilIcon className="h-4 w-4" />
                               Edit Section
                             </MenuItem>
 
                             <MenuItem
-                               onClick={() => handleDeleteSection(sectionName)} // Call the delete handler
-                               className="text-red-500 hover:bg-red-50 hover:text-red-700" // Optional: Add red styling for delete
+                              onClick={() => handleArchiveSection(sectionName)}
+                              className="flex items-center gap-2 text-orange-500 hover:bg-orange-50 hover:text-orange-700"
                             >
-                              Delete Section
+                              <ArchiveBoxIcon className="h-4 w-4" />
+                              {archived ? "Unarchive Section" : "Archive Section"}
                             </MenuItem>
 
                             <MenuItem
-                               onClick={() => handleManageModule(sectionName)} // Call the new handler
-                               className="text-blue-500 hover:bg-blue-50 hover:text-blue-700" // Optional: Add blue styling
+                              onClick={() => handleLockUnlockModule(sectionName)}
+                              className="flex items-center gap-2 text-blue-500 hover:bg-blue-50 hover:text-blue-700"
                             >
+                              <LockClosedIcon className="h-4 w-4" />
                               Lock/Unlock Module
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => handleViewStudents(sectionName)}
+                              className="flex items-center gap-2 text-purple-500 hover:bg-purple-50 hover:text-purple-700"
+                            >
+                              <UsersIcon className="h-4 w-4" />
+                              View Students
                             </MenuItem>
 
                           </MenuList>
@@ -166,6 +274,49 @@ export function Section() {
           </table>
         </CardBody>
       </Card>
+
+      {/* Add Section Modal */}
+      <Dialog open={isAddSectionOpen} handler={setIsAddSectionOpen}>
+        <DialogHeader>Add New Section</DialogHeader>
+        <DialogBody>
+          <form onSubmit={handleCreateSection}>
+            <div className="mb-4">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-2 font-medium"
+              >
+                Section Name
+              </Typography>
+              <Input
+                type="text"
+                label="Enter section name"
+                value={newSectionName}
+                onChange={(e) => setNewSectionName(e.target.value)}
+                size="lg"
+                required
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
+          </form>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleCancelAddSection}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="gray" onClick={handleCreateSection}>
+            <span>Create Section</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

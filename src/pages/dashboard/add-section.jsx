@@ -23,13 +23,37 @@ function AddSection() {
       return;
     }
 
-    console.log("Attempting to create section with name:", sectionName);
+    // Get existing sections from localStorage
+    const existingSections = JSON.parse(localStorage.getItem('sections') || '[]');
 
-    
-    alert(`Section "${sectionName}" created successfully! (Simulated)`);
+    // Check if section name already exists
+    const sectionExists = existingSections.some(
+      section => section.sectionName.toLowerCase() === sectionName.trim().toLowerCase()
+    );
 
-   
-    navigate('/dashboard/section'); // Redirect back to the dashboard/sections page
+    if (sectionExists) {
+      alert("A section with this name already exists!");
+      return;
+    }
+
+    // Create new section object
+    const newSection = {
+      sectionName: sectionName.trim(),
+      noOfStudents: 0,
+      archived: false
+    };
+
+    // Add new section to existing sections
+    const updatedSections = [...existingSections, newSection];
+
+    // Save to localStorage
+    localStorage.setItem('sections', JSON.stringify(updatedSections));
+
+    console.log("Section created successfully:", newSection);
+    alert(`Section "${sectionName}" created successfully!`);
+
+    // Redirect back to the dashboard/sections page
+    navigate('/dashboard/section');
   };
 
   const handleCancel = () => {

@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   Typography,
@@ -19,6 +19,7 @@ import {
   ClockIcon,
   CreditCardIcon,
   Bars3Icon,
+  ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import {
   useMaterialTailwindController,
@@ -30,7 +31,13 @@ export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+
+  const handleLogout = () => {
+    // You can add any logout logic here (clear tokens, etc.)
+    navigate("/auth/sign-in");
+  };
 
   return (
     <Navbar
@@ -75,6 +82,15 @@ export function DashboardNavbar() {
           <div className="mr-auto md:mr-4 md:w-56">
             <Input label="Search" />
           </div>
+          <Button
+            variant="text"
+            color="blue-gray"
+            className="flex items-center gap-2 mr-2"
+            onClick={handleLogout}
+          >
+            <ArrowRightOnRectangleIcon className="h-4 w-4" />
+            <span className="hidden md:inline">Logout</span>
+          </Button>
           <IconButton
             variant="text"
             color="blue-gray"
