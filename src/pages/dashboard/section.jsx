@@ -38,6 +38,11 @@ export function Section() {
   const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
   const [newSectionName, setNewSectionName] = useState("");
 
+  // Edit Section Modal states
+  const [isEditSectionOpen, setIsEditSectionOpen] = useState(false);
+  const [editingSection, setEditingSection] = useState(null);
+  const [editSectionName, setEditSectionName] = useState("");
+
   // Load sections from localStorage on component mount
   useEffect(() => {
     const savedSections = localStorage.getItem('sections');
@@ -105,9 +110,14 @@ export function Section() {
 
   // Handler for Edit Section
   const handleEditSection = (sectionName) => {
-    const sectionSlug = getSlug(sectionName);
-    navigate(`/edit-section/${sectionSlug}`);
-    console.log(`Navigating to edit section: ${sectionName}`);
+    console.log(`Editing section: ${sectionName}`);
+    // Find the section to edit
+    const sectionToEdit = sections.find(section => section.sectionName === sectionName);
+    if (sectionToEdit) {
+      setEditingSection(sectionToEdit);
+      setEditSectionName(sectionToEdit.sectionName);
+      setIsEditSectionOpen(true);
+    }
   };
 
   // Handler for Archive Section
@@ -133,6 +143,63 @@ export function Section() {
     // Navigate to students page with section filter
     navigate(`/dashboard/students?section=${encodeURIComponent(sectionName)}`);
     console.log(`Viewing students for section: ${sectionName}`);
+  };
+
+  // Handle updating section
+  const handleUpdateSection = (e) => {
+    e.preventDefault();
+
+    if (editSectionName.trim() === "") {
+      alert("Section Name cannot be empty!");
+      return;
+    }
+
+    // Check if section name already exists (excluding current section)
+    const sectionExists = sections.some(
+      section => section.sectionName.toLowerCase() === editSectionName.trim().toLowerCase() &&
+                 section.sectionName !== editingSection.sectionName
+    );
+
+    if (sectionExists) {
+      alert("A section with this name already exists!");
+      return;
+    }
+
+    // Update section data
+    const updatedSections = sections.map(section =>
+      section.sectionName === editingSection.sectionName
+        ? {
+            ...section,
+            sectionName: editSectionName.trim()
+          }
+        : section
+    );
+
+    setSections(updatedSections);
+
+    // Also update students data if section name changed
+    if (editingSection.sectionName !== editSectionName.trim()) {
+      const savedStudents = JSON.parse(localStorage.getItem('students') || '[]');
+      const updatedStudents = savedStudents.map(student =>
+        student.section === editingSection.sectionName
+          ? { ...student, section: editSectionName.trim() }
+          : student
+      );
+      localStorage.setItem('students', JSON.stringify(updatedStudents));
+    }
+
+    console.log("Section updated successfully");
+    alert(`Section "${editSectionName}" updated successfully!`);
+
+    // Close modal and reset form
+    handleCancelEditSection();
+  };
+
+  // Handle canceling edit section
+  const handleCancelEditSection = () => {
+    setIsEditSectionOpen(false);
+    setEditingSection(null);
+    setEditSectionName("");
   };
 
 
@@ -314,6 +381,49 @@ export function Section() {
           </Button>
           <Button variant="gradient" color="gray" onClick={handleCreateSection}>
             <span>Create Section</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      {/* Edit Section Modal */}
+      <Dialog open={isEditSectionOpen} handler={setIsEditSectionOpen}>
+        <DialogHeader>Edit Section</DialogHeader>
+        <DialogBody>
+          <form onSubmit={handleUpdateSection}>
+            <div className="mb-4">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-2 font-medium"
+              >
+                Section Name
+              </Typography>
+              <Input
+                type="text"
+                label="Enter section name"
+                value={editSectionName}
+                onChange={(e) => setEditSectionName(e.target.value)}
+                size="lg"
+                required
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
+          </form>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleCancelEditSection}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="gray" onClick={handleUpdateSection}>
+            <span>Update Section</span>
           </Button>
         </DialogFooter>
       </Dialog>
