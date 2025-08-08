@@ -13,7 +13,7 @@ import AddStudent from "./pages/dashboard/add-student";
 import EditStudent from "./pages/dashboard/edit-student";
 import { Section } from "./pages/dashboard/section";
 // Importing components from the pages directory.
-
+// Whatever
 // This "./" means current directory.
 //leysa
 function App() {
