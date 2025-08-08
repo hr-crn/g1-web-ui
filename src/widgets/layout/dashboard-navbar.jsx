@@ -20,16 +20,19 @@ import {
   CreditCardIcon,
   Bars3Icon,
   ArrowRightOnRectangleIcon,
+  SunIcon,
+  MoonIcon,
 } from "@heroicons/react/24/solid";
 import {
   useMaterialTailwindController,
   setOpenConfigurator,
   setOpenSidenav,
+  setDarkMode,
 } from "@/context";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
-  const { fixedNavbar, openSidenav } = controller;
+  const { fixedNavbar, openSidenav, darkMode } = controller;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
@@ -39,14 +42,28 @@ export function DashboardNavbar() {
     navigate("/auth/sign-in");
   };
 
+  const handleDarkModeToggle = () => {
+    setDarkMode(dispatch, !darkMode);
+    // Apply dark mode to document
+    if (!darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
   return (
     <Navbar
-      color={fixedNavbar ? "white" : "transparent"}
+      color={fixedNavbar ? (darkMode ? "gray" : "white") : "transparent"}
       className={`rounded-xl transition-all ${
         fixedNavbar
-          ? "sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5"
+          ? `sticky top-4 z-40 py-3 shadow-md ${
+              darkMode
+                ? "shadow-gray-900/20 bg-gray-800 border border-gray-700"
+                : "shadow-blue-gray-500/5 bg-white"
+            }`
           : "px-0 py-1"
-      }`}
+      } ${darkMode ? "dark:bg-gray-800" : ""}`}
       fullWidth
       blurred={fixedNavbar}
     >
@@ -82,6 +99,18 @@ export function DashboardNavbar() {
           <div className="mr-auto md:mr-4 md:w-56">
             <Input label="Search" />
           </div>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            className="mr-2"
+            onClick={handleDarkModeToggle}
+          >
+            {darkMode ? (
+              <SunIcon className="h-4 w-4" />
+            ) : (
+              <MoonIcon className="h-4 w-4" />
+            )}
+          </IconButton>
           <Button
             variant="text"
             color="blue-gray"

@@ -12,10 +12,14 @@ import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
-  const { sidenavType } = controller;
+  const { sidenavType, darkMode } = controller;
 
   return (
-    <div className="min-h-screen bg-blue-gray-50/50">
+    <div className={`min-h-screen transition-colors duration-300 ${
+      darkMode
+        ? "bg-gray-900 dark:bg-gray-900"
+        : "bg-blue-gray-50/50"
+    }`}>
       <Sidenav
         routes={routes}
         brandImg={
