@@ -17,6 +17,7 @@ import { Section } from "./pages/dashboard/section";
 // This "./" means current directory.
 //leysa_Pogi
 //Panels Appeared JiveV
+//Add student efficiency JiveV
 function App() {
   const [controller] = useMaterialTailwindController();
   const { darkMode } = controller;
