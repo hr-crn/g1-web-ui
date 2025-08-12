@@ -26,6 +26,7 @@ import { EllipsisVerticalIcon, PlusCircleIcon, PencilIcon, ArchiveBoxIcon } from
 import { studentsData } from "@/data";
 import { useNavigate, useSearchParams } from "react-router-dom"; // Import useNavigate and useSearchParams
 import React, { useState, useEffect } from "react";
+import StudentAvatar from "@/components/StudentAvatar";
 
 export function Students() {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -141,12 +142,12 @@ export function Students() {
     e.preventDefault();
 
     if (newStudentName.trim() === "") {
-      alert("Student Name cannot be empty!");
+      window.showToast("Student Name cannot be empty!", "error");
       return;
     }
 
     if (newUsername.trim() === "") {
-      alert("Username cannot be empty!");
+      window.showToast("Username cannot be empty!", "error");
       return;
     }
 
@@ -158,7 +159,7 @@ export function Students() {
     );
 
     if (usernameExists) {
-      alert("A student with this username already exists!");
+      window.showToast("A student with this username already exists!", "error");
       return;
     }
 
@@ -209,7 +210,7 @@ export function Students() {
   // Confirm batch assignment
   const confirmBatchAssignment = () => {
     if (batchSection === "") {
-      alert("Please select a section!");
+      window.showToast("Please select a section!", "warning");
       return;
     }
 
@@ -235,7 +236,7 @@ export function Students() {
     );
     localStorage.setItem('sections', JSON.stringify(updatedSections));
 
-    alert(`${pendingStudents.length} students added to ${batchSection} section successfully!`);
+    window.showToast(`${pendingStudents.length} students added to ${batchSection} section successfully!`, "success");
 
     // Reset everything
     setPendingStudents([]);
@@ -316,7 +317,7 @@ export function Students() {
       }));
       localStorage.setItem('students', JSON.stringify(studentsWithArchived));
       setCurrentStudentsData(studentsWithArchived);
-      alert('Student data has been reset!');
+      window.showToast('Student data has been reset!', 'success');
     }
   };
 
@@ -325,17 +326,17 @@ export function Students() {
     e.preventDefault();
 
     if (editStudentName.trim() === "") {
-      alert("Student Name cannot be empty!");
+      window.showToast("Student Name cannot be empty!", "error");
       return;
     }
 
     if (editUsername.trim() === "") {
-      alert("Username cannot be empty!");
+      window.showToast("Username cannot be empty!", "error");
       return;
     }
 
     if (editSection === "") {
-      alert("Please select a section!");
+      window.showToast("Please select a section!", "warning");
       return;
     }
 
@@ -346,7 +347,7 @@ export function Students() {
     );
 
     if (usernameExists) {
-      alert("A student with this username already exists!");
+      window.showToast("A student with this username already exists!", "error");
       return;
     }
 
@@ -382,7 +383,7 @@ export function Students() {
     }
 
     console.log("Student updated successfully");
-    alert(`Student "${editStudentName}" updated successfully!`);
+    window.showToast(`Student "${editStudentName}" updated successfully!`, "success");
 
     // Close modal and reset form
     handleCancelEditStudent();
@@ -400,14 +401,21 @@ export function Students() {
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+        <CardHeader variant="gradient" color="gray" className="mb-8 p-6 bg-gradient-to-r from-gray-800 to-gray-900 shadow-xl">
           {/* Flex container for "Students" text and PlusCircleIcon */}
           <div className="flex items-center justify-between">
-            <Typography variant="h6" color="white">
-              {showArchived ? "Archived Students" : "Students"}
-              {sectionFilter && ` - ${sectionFilter} Section`}
-              {selectedSection ? ` - ${selectedSection}` : " - All Students"}
-            </Typography>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <Typography variant="h6" color="white" className="font-bold">
+                  {showArchived ? "📦" : "👥"}
+                </Typography>
+              </div>
+              <Typography variant="h6" color="white" className="font-bold">
+                {showArchived ? "Archived Students" : "Students"}
+                {sectionFilter && ` - ${sectionFilter} Section`}
+                {selectedSection ? ` - ${selectedSection}` : " - All Students"}
+              </Typography>
+            </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <Typography variant="small" color="white">
@@ -433,9 +441,11 @@ export function Students() {
                   }}
                 />
               </div>
-              <Typography variant="small" color="white" className="mr-2">
-                Showing {filteredStudents.length} student(s)
-              </Typography>
+              <div className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full backdrop-blur-sm">
+                <Typography variant="small" color="white" className="font-medium">
+                  {filteredStudents.length} student{filteredStudents.length !== 1 ? 's' : ''}
+                </Typography>
+              </div>
 
               {/* Temporary Debug Button */}
               <Button
@@ -443,18 +453,18 @@ export function Students() {
                 variant="outlined"
                 color="white"
                 onClick={resetStudentData}
-                className="mr-2 text-xs"
+                className="mr-2 text-xs hover:bg-white/10 transition-all duration-200 hover:scale-105"
               >
-                Reset Data
+                🔄 Reset Data
               </Button>
 
               {!showArchived && (
-                <Tooltip content="Add Student">
+                <Tooltip content="Add New Student">
                   <IconButton
-                    variant="text"
-                    color="white"
+                    variant="gradient"
+                    color="blue"
                     onClick={handleAddStudent}
-                    className="hover:bg-white/10"
+                    className="hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     <PlusCircleIcon className="h-6 w-6" />
                   </IconButton>
@@ -466,32 +476,32 @@ export function Students() {
 
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          {/* Stats Display with Section Selector and Search */}
-          <div className="px-6 py-4 border-b border-blue-gray-50">
+          {/* Enhanced Stats Display with Section Selector and Search */}
+          <div className="px-6 py-6 border-b border-blue-gray-50 bg-gradient-to-r from-gray-50 to-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <div className="text-center">
-                  <Typography variant="h6" color="blue-gray">
+                <div className="text-center p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-md transition-all duration-200">
+                  <Typography variant="h5" color="green" className="font-bold">
                     {currentStudentsData.filter(s => !s.archived).length}
                   </Typography>
-                  <Typography variant="small" color="blue-gray" className="font-normal">
-                    Active Students
+                  <Typography variant="small" color="green" className="font-semibold">
+                    ✅ Active Students
                   </Typography>
                 </div>
-                <div className="text-center">
-                  <Typography variant="h6" color="blue-gray">
+                <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-200 hover:shadow-md transition-all duration-200">
+                  <Typography variant="h5" color="orange" className="font-bold">
                     {currentStudentsData.filter(s => s.archived).length}
                   </Typography>
-                  <Typography variant="small" color="blue-gray" className="font-normal">
-                    Archived Students
+                  <Typography variant="small" color="orange" className="font-semibold">
+                    📦 Archived Students
                   </Typography>
                 </div>
-                <div className="text-center">
-                  <Typography variant="h6" color="blue-gray">
+                <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                  <Typography variant="h5" color="blue" className="font-bold">
                     {currentStudentsData.length}
                   </Typography>
-                  <Typography variant="small" color="blue-gray" className="font-normal">
-                    Total Students
+                  <Typography variant="small" color="blue" className="font-semibold">
+                    👥 Total Students
                   </Typography>
                 </div>
               </div>
@@ -526,10 +536,10 @@ export function Students() {
                 <div className="w-60">
                   <Input
                     type="text"
-                    placeholder="Search students by name or username"
+                    placeholder="🔍 Search students by name or username"
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="!bg-gray-100 !border-gray-300 !text-gray-900"
+                    className="!bg-gray-100 !border-gray-300 !text-gray-900 hover:!bg-gray-50 hover:shadow-md transition-all duration-200 focus:!border-blue-500"
                     labelProps={{
                       className: "hidden",
                     }}
@@ -542,18 +552,24 @@ export function Students() {
             </div>
           </div>
           <table className="w-full min-w-[640px] table-auto">
-            <thead>
+            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
               <tr>
-                {["student name","username", "section", "actions"].map((el) => (
+                {[
+                  { key: "student name", icon: "👤", label: "Student Name" },
+                  { key: "username", icon: "@", label: "Username" },
+                  { key: "section", icon: "🏫", label: "Section" },
+                  { key: "actions", icon: "⚙️", label: "Actions" }
+                ].map((col) => (
                   <th
-                    key={el}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                    key={col.key}
+                    className="border-b-2 border-blue-gray-100 py-4 px-5 text-left hover:bg-gray-100 transition-colors duration-200"
                   >
                     <Typography
                       variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
+                      className="text-xs font-bold uppercase text-blue-gray-600 flex items-center gap-2"
                     >
-                      {el}
+                      <span>{col.icon}</span>
+                      {col.label}
                     </Typography>
                   </th>
                 ))}
@@ -569,15 +585,26 @@ export function Students() {
                   }`;
 
                   return (
-                    <tr key={studentName} className={archived ? "opacity-60" : ""}>
+                    <tr
+                      key={studentName}
+                      className={`
+                        ${archived ? "opacity-60" : ""}
+                        hover:bg-gray-50 transition-colors duration-200 cursor-pointer
+                        transform hover:scale-[1.01] hover:shadow-sm
+                      `}
+                    >
                       <td className={className}>
                         <div className="flex items-center gap-4">
-
+                          <StudentAvatar
+                            name={studentName}
+                            size="md"
+                            showTooltip={true}
+                          />
                           <div>
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="font-semibold"
+                              className="font-semibold hover:text-blue-600 transition-colors duration-200"
                             >
                               {studentName}
                               {archived && (
@@ -585,48 +612,51 @@ export function Students() {
                                   size="sm"
                                   value="Archived"
                                   color="gray"
-                                  className="ml-2 inline-block"
+                                  className="ml-2 inline-block animate-pulse"
                                 />
                               )}
                             </Typography>
-
                           </div>
                         </div>
                       </td>
-                      
+
                       <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {username}
+                        <Typography className="text-xs font-semibold text-blue-gray-600 hover:text-blue-800 transition-colors duration-200">
+                          @{username}
                         </Typography>
                       </td>
 
                       <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
+                        <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200">
                           {section}
-                        </Typography>
+                        </div>
                       </td>
                       
                       <td className={className}>
                         <Menu>
                           <MenuHandler>
-                            <IconButton variant="text" color="blue-gray">
+                            <IconButton
+                              variant="text"
+                              color="blue-gray"
+                              className="hover:bg-gray-100 transition-all duration-200 hover:scale-110"
+                            >
                               <EllipsisVerticalIcon
                                 strokeWidth={2}
-                                className="h-5 w-5 text-blue-gray-500" // Icon color
+                                className="h-5 w-5 text-blue-gray-500 hover:text-blue-gray-700 transition-colors duration-200"
                               />
                             </IconButton>
                           </MenuHandler>
-                          <MenuList>
+                          <MenuList className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
                             <MenuItem
                               onClick={() => handleEditStudent(username)}
-                              className="flex items-center gap-2 text-green-500 hover:bg-green-50 hover:text-green-700"
+                              className="flex items-center gap-2 text-green-600 hover:bg-green-50 hover:text-green-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
                             >
                               <PencilIcon className="h-4 w-4" />
                               Edit Student
                             </MenuItem>
                             <MenuItem
                               onClick={() => handleArchiveStudent(username)}
-                              className="flex items-center gap-2 text-orange-500 hover:bg-orange-50 hover:text-orange-700"
+                              className="flex items-center gap-2 text-orange-600 hover:bg-orange-50 hover:text-orange-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
                             >
                               <ArchiveBoxIcon className="h-4 w-4" />
                               {archived ? "Unarchive Student" : "Archive Student"}
@@ -712,9 +742,12 @@ export function Students() {
                     type="submit"
                     variant="gradient"
                     color="blue"
-                    className="mt-4"
+                    className="mt-4 hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
-                    Add to List
+                    <span className="flex items-center gap-2">
+                      <span>➕</span>
+                      Add to List
+                    </span>
                   </Button>
                 </div>
               </form>
@@ -735,24 +768,30 @@ export function Students() {
                   {pendingStudents.map((student) => (
                     <div
                       key={student.id}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-all duration-200 transform hover:scale-[1.02]"
                     >
-                      <div>
-                        <Typography variant="small" color="blue-gray" className="font-semibold">
-                          {student.studentName}
-                        </Typography>
-                        <Typography variant="small" color="gray">
-                          @{student.username}
-                        </Typography>
+                      <div className="flex items-center gap-3">
+                        <StudentAvatar
+                          name={student.studentName}
+                          size="sm"
+                        />
+                        <div>
+                          <Typography variant="small" color="blue-gray" className="font-semibold">
+                            {student.studentName}
+                          </Typography>
+                          <Typography variant="small" color="gray">
+                            @{student.username}
+                          </Typography>
+                        </div>
                       </div>
                       <Button
                         size="sm"
                         variant="text"
                         color="red"
                         onClick={() => removePendingStudent(student.id)}
-                        className="p-2"
+                        className="p-2 hover:bg-red-50 hover:scale-110 transition-all duration-200 rounded-full"
                       >
-                        ✕
+                        <span className="text-red-500 font-bold">✕</span>
                       </Button>
                     </div>
                   ))}
@@ -767,9 +806,12 @@ export function Students() {
                       variant="gradient"
                       color="green"
                       onClick={handleBatchSectionAssignment}
-                      className="w-full"
+                      className="w-full hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                     >
-                      ✓ Assign Section to All Students
+                      <span className="flex items-center justify-center gap-2">
+                        <span>✅</span>
+                        Assign Section to All Students
+                      </span>
                     </Button>
                   ) : (
                     <div className="space-y-4">
