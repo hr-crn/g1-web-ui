@@ -46,6 +46,16 @@ export function Profile() {
   };
 
   const handleSaveChanges = () => {
+    if (editData.firstName.trim() === "" || editData.lastName.trim() === "") {
+      window.showToast("First Name and Last Name cannot be empty!", "error");
+      return;
+    }
+
+    if (editData.username.trim() === "") {
+      window.showToast("Username cannot be empty!", "error");
+      return;
+    }
+
     setProfileData({
       ...profileData,
       firstName: editData.firstName,
@@ -54,6 +64,7 @@ export function Profile() {
       ...(editData.password && { password: "*******" })
     });
     setIsEditOpen(false);
+    window.showToast("Profile updated successfully!", "success");
   };
 
   const handleCancel = () => {
@@ -68,26 +79,48 @@ export function Profile() {
 
   return (
     <>
-      <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
-        <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
+      <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 shadow-2xl">
+        <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-[url('/img/background-image.png')] bg-cover bg-center opacity-20" />
+
+        {/* Floating elements for visual interest */}
+        <div className="absolute top-10 right-10 w-20 h-20 bg-white/10 rounded-full backdrop-blur-sm animate-pulse" />
+        <div className="absolute bottom-10 left-10 w-16 h-16 bg-white/5 rounded-full backdrop-blur-sm animate-pulse delay-1000" />
       </div>
-      <Card className="mx-3 -mt-16 mb-6 lg:mx-4 border border-blue-gray-100">
-        <CardBody className="p-4">
+
+      <Card className="mx-3 -mt-16 mb-6 lg:mx-4 border border-blue-gray-100 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1">
+        <CardBody className="p-6">
           <div className="mb-10 flex items-center justify-between flex-wrap gap-6">
             <div className="flex items-center gap-6">
+              {/* Enhanced Avatar */}
+              <div className="relative">
+                <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110">
+                  {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
+                </div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-md animate-pulse" />
+              </div>
+
               <div>
-                <Typography variant="h5" color="blue-gray" className="mb-1">
+                <Typography variant="h4" color="blue-gray" className="mb-2 font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   {profileData.firstName} {profileData.lastName}
                 </Typography>
-                <Typography
-                  variant="small"
-                  className="font-normal text-blue-gray-600"
-                >
-                  Teacher
-                </Typography>
+                <div className="flex items-center gap-2">
+                  <div className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full">
+                    <Typography
+                      variant="small"
+                      className="font-semibold text-indigo-700"
+                    >
+                      👩‍🏫 Teacher
+                    </Typography>
+                  </div>
+                  <div className="px-3 py-1 bg-green-100 rounded-full">
+                    <Typography variant="small" className="font-semibold text-green-700">
+                      🟢 Online
+                    </Typography>
+                  </div>
+                </div>
               </div>
             </div>
-
           </div>
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
 
@@ -116,13 +149,28 @@ export function Profile() {
         </CardBody>
       </Card>
 
-      {/* Edit Profile Dialog */}
-      <Dialog open={isEditOpen} handler={setIsEditOpen}>
-        <DialogHeader>Edit Profile</DialogHeader>
-        <DialogBody>
-          <div className="flex flex-col gap-4">
-            <div>
-              <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+      {/* Enhanced Edit Profile Dialog */}
+      <Dialog
+        open={isEditOpen}
+        handler={setIsEditOpen}
+        size="md"
+        className="bg-white/95 backdrop-blur-sm"
+      >
+        <DialogHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-t-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <span>✏️</span>
+            </div>
+            <Typography variant="h5" color="white" className="font-bold">
+              Edit Profile
+            </Typography>
+          </div>
+        </DialogHeader>
+        <DialogBody className="p-6">
+          <div className="flex flex-col gap-6">
+            <div className="relative">
+              <Typography variant="small" color="blue-gray" className="mb-2 font-medium flex items-center gap-2">
+                <span>👤</span>
                 First Name
               </Typography>
               <Input
@@ -130,7 +178,7 @@ export function Profile() {
                 placeholder="Enter first name"
                 value={editData.firstName}
                 onChange={(e) => setEditData({...editData, firstName: e.target.value})}
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 focus:!border-t-indigo-500 hover:shadow-md transition-all duration-200"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -184,17 +232,28 @@ export function Profile() {
             </div>
           </div>
         </DialogBody>
-        <DialogFooter>
+        <DialogFooter className="bg-gray-50 rounded-b-lg">
           <Button
             variant="text"
             color="red"
             onClick={handleCancel}
-            className="mr-1"
+            className="mr-2 hover:bg-red-50 hover:scale-105 transition-all duration-200"
           >
-            <span>Cancel</span>
+            <span className="flex items-center gap-2">
+              <span>❌</span>
+              Cancel
+            </span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleSaveChanges}>
-            <span>Save Changes</span>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={handleSaveChanges}
+            className="hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
+            <span className="flex items-center gap-2">
+              <span>💾</span>
+              Save Changes
+            </span>
           </Button>
         </DialogFooter>
       </Dialog>

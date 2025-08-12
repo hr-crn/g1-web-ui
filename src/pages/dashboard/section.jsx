@@ -70,7 +70,7 @@ export function Section() {
     e.preventDefault();
 
     if (newSectionName.trim() === "") {
-      alert("Section Name cannot be empty!");
+      window.showToast("Section Name cannot be empty!", "error");
       return;
     }
 
@@ -80,7 +80,7 @@ export function Section() {
     );
 
     if (sectionExists) {
-      alert("A section with this name already exists!");
+      window.showToast("A section with this name already exists!", "error");
       return;
     }
 
@@ -96,7 +96,7 @@ export function Section() {
     setSections(updatedSections);
 
     console.log("Section created successfully:", newSection);
-    alert(`Section "${newSectionName}" created successfully!`);
+    window.showToast(`Section "${newSectionName}" created successfully!`, "success");
 
     // Close modal and reset form
     setIsAddSectionOpen(false);
@@ -150,7 +150,7 @@ export function Section() {
     e.preventDefault();
 
     if (editSectionName.trim() === "") {
-      alert("Section Name cannot be empty!");
+      window.showToast("Section Name cannot be empty!", "error");
       return;
     }
 
@@ -161,7 +161,7 @@ export function Section() {
     );
 
     if (sectionExists) {
-      alert("A section with this name already exists!");
+      window.showToast("A section with this name already exists!", "error");
       return;
     }
 
@@ -189,7 +189,7 @@ export function Section() {
     }
 
     console.log("Section updated successfully");
-    alert(`Section "${editSectionName}" updated successfully!`);
+    window.showToast(`Section "${editSectionName}" updated successfully!`, "success");
 
     // Close modal and reset form
     handleCancelEditSection();
@@ -206,43 +206,57 @@ export function Section() {
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+        <CardHeader variant="gradient" color="gray" className="mb-8 p-6 bg-gradient-to-r from-orange-800 to-orange-900 shadow-xl">
           <div className="flex items-center justify-between">
-            <Typography variant="h6" color="white">
-              Sections
-            </Typography>
-            <Tooltip content="Add Section">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <Typography variant="h6" color="white" className="font-bold">
+                  🏫
+                </Typography>
+              </div>
+              <Typography variant="h6" color="white" className="font-bold">
+                Sections
+              </Typography>
+              <div className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full backdrop-blur-sm">
+                <Typography variant="small" color="white" className="font-medium">
+                  {sections.filter(s => !s.archived).length} active section{sections.filter(s => !s.archived).length !== 1 ? 's' : ''}
+                </Typography>
+              </div>
+            </div>
+            <Tooltip content="Add New Section">
               <IconButton
-                variant="text"
-                color="white" // This sets the icon color to white
-                onClick={handleAddSection} // This makes it clickable and calls handleAddSection
-                className="hover:bg-white/10" // Optional: adds a subtle hover background
+                variant="gradient"
+                color="orange"
+                onClick={handleAddSection}
+                className="hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                <PlusCircleIcon className="h-6 w-6" />{" "}
-                {/* This is your actual icon */}
+                <PlusCircleIcon className="h-6 w-6" />
               </IconButton>
             </Tooltip>
           </div>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
-            <thead>
+            <thead className="bg-gradient-to-r from-orange-50 to-orange-100">
               <tr>
-                {["Section name", "Total no. of students", "Actions"].map(
-                  (el) => (
-                    <th
-                      key={el}
-                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                {[
+                  { key: "section name", icon: "🏫", label: "Section Name" },
+                  { key: "students", icon: "👥", label: "Total Students" },
+                  { key: "actions", icon: "⚙️", label: "Actions" }
+                ].map((col) => (
+                  <th
+                    key={col.key}
+                    className="border-b-2 border-orange-100 py-4 px-5 text-left hover:bg-orange-100 transition-colors duration-200"
+                  >
+                    <Typography
+                      variant="small"
+                      className="text-xs font-bold uppercase text-orange-700 flex items-center gap-2"
                     >
-                      <Typography
-                        variant="small"
-                        className="text-[11px] font-bold uppercase text-blue-gray-400"
-                      >
-                        {el}
-                      </Typography>
-                    </th>
-                  )
-                )}
+                      <span>{col.icon}</span>
+                      {col.label}
+                    </Typography>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -255,79 +269,102 @@ export function Section() {
                   }`;
 
                   return (
-                    <tr key={sectionName} className={archived ? "opacity-50" : ""}>
+                    <tr
+                      key={sectionName}
+                      className={`
+                        ${archived ? "opacity-50" : ""}
+                        hover:bg-orange-50 transition-all duration-200 cursor-pointer
+                        transform hover:scale-[1.01] hover:shadow-sm
+                      `}
+                    >
                       <td className={className}>
                         <div className="flex items-center gap-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
-                          >
-                            {sectionName}
-                            {archived && (
-                              <Chip
-                                size="sm"
-                                value="Archived"
-                                color="gray"
-                                className="ml-2 inline-block"
-                              />
-                            )}
-                          </Typography>
+                          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                            🏫
+                          </div>
+                          <div>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-bold hover:text-orange-600 transition-colors duration-200"
+                            >
+                              {sectionName}
+                              {archived && (
+                                <Chip
+                                  size="sm"
+                                  value="Archived"
+                                  color="gray"
+                                  className="ml-2 inline-block animate-pulse"
+                                />
+                              )}
+                            </Typography>
+                          </div>
                         </div>
                       </td>
 
                       <td className={className}>
-                        <Typography
-                          variant="small"
-                          className="text-xs font-medium text-blue-gray-600"
-                        >
-                          {noOfStudents}
-                        </Typography>
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 rounded-full">
+                            <span className="text-orange-600">👥</span>
+                            <Typography
+                              variant="small"
+                              className="text-sm font-bold text-orange-700"
+                            >
+                              {noOfStudents}
+                            </Typography>
+                          </div>
+                          <Typography variant="small" className="text-xs text-gray-500">
+                            student{noOfStudents !== 1 ? 's' : ''}
+                          </Typography>
+                        </div>
                       </td>
 
-                      {/* THIS IS THE MODIFIED TD FOR THE DROPDOWN MENU */}
+                      {/* Enhanced Actions Menu */}
                       <td className={className}>
-                        <Menu> {/* Material Tailwind Menu */}
+                        <Menu>
                           <MenuHandler>
-                            {/* The IconButton acts as the trigger for the menu */}
-                            <IconButton variant="text" color="blue-gray">
+                            <IconButton
+                              variant="text"
+                              color="blue-gray"
+                              className="hover:bg-orange-100 transition-all duration-200 hover:scale-110"
+                            >
                               <EllipsisVerticalIcon
                                 strokeWidth={2}
-                                className="h-5 w-5 text-blue-gray-500" // Icon color
+                                className="h-5 w-5 text-blue-gray-500 hover:text-orange-700 transition-colors duration-200"
                               />
                             </IconButton>
                           </MenuHandler>
-                          <MenuList> {/* The dropdown list of options */}
+                          <MenuList className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
                             <MenuItem
                               onClick={() => handleEditSection(sectionName)}
-                              className="flex items-center gap-2 text-green-500 hover:bg-green-50 hover:text-green-700"
+                              className="flex items-center gap-2 text-green-600 hover:bg-green-50 hover:text-green-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
                             >
                               <PencilIcon className="h-4 w-4" />
-                              Edit Section
-                            </MenuItem>
-
-                            <MenuItem
-                              onClick={() => handleArchiveSection(sectionName)}
-                              className="flex items-center gap-2 text-orange-500 hover:bg-orange-50 hover:text-orange-700"
-                            >
-                              <ArchiveBoxIcon className="h-4 w-4" />
-                              {archived ? "Unarchive Section" : "Archive Section"}
-                            </MenuItem>
-
-                            <MenuItem
-                              onClick={() => handleLockUnlockModule(sectionName)}
-                              className="flex items-center gap-2 text-blue-500 hover:bg-blue-50 hover:text-blue-700"
-                            >
-                              <LockClosedIcon className="h-4 w-4" />
-                              Lock/Unlock Module
+                              ✏️ Edit Section
                             </MenuItem>
 
                             <MenuItem
                               onClick={() => handleViewStudents(sectionName)}
-                              className="flex items-center gap-2 text-purple-500 hover:bg-purple-50 hover:text-purple-700"
+                              className="flex items-center gap-2 text-purple-600 hover:bg-purple-50 hover:text-purple-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
                             >
                               <UsersIcon className="h-4 w-4" />
-                              View Students
+                              👥 View Students
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => handleLockUnlockModule(sectionName)}
+                              className="flex items-center gap-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
+                            >
+                              <LockClosedIcon className="h-4 w-4" />
+                              🔒 Lock/Unlock Module
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => handleArchiveSection(sectionName)}
+                              className="flex items-center gap-2 text-orange-600 hover:bg-orange-50 hover:text-orange-700 transition-all duration-200 rounded-lg mx-1 my-0.5"
+                            >
+                              <ArchiveBoxIcon className="h-4 w-4" />
+                              {archived ? "📤 Unarchive Section" : "📦 Archive Section"}
                             </MenuItem>
 
                           </MenuList>
@@ -342,17 +379,32 @@ export function Section() {
         </CardBody>
       </Card>
 
-      {/* Add Section Modal */}
-      <Dialog open={isAddSectionOpen} handler={setIsAddSectionOpen}>
-        <DialogHeader>Add New Section</DialogHeader>
-        <DialogBody>
+      {/* Enhanced Add Section Modal */}
+      <Dialog
+        open={isAddSectionOpen}
+        handler={setIsAddSectionOpen}
+        size="md"
+        className="bg-white/95 backdrop-blur-sm"
+      >
+        <DialogHeader className="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-t-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <span>🏫</span>
+            </div>
+            <Typography variant="h5" color="white" className="font-bold">
+              Add New Section
+            </Typography>
+          </div>
+        </DialogHeader>
+        <DialogBody className="p-6">
           <form onSubmit={handleCreateSection}>
-            <div className="mb-4">
+            <div className="mb-6">
               <Typography
                 variant="small"
                 color="blue-gray"
-                className="mb-2 font-medium"
+                className="mb-2 font-medium flex items-center gap-2"
               >
+                <span>🏫</span>
                 Section Name
               </Typography>
               <Input
@@ -362,7 +414,7 @@ export function Section() {
                 onChange={(e) => setNewSectionName(e.target.value)}
                 size="lg"
                 required
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                className="!border-t-blue-gray-200 focus:!border-t-orange-500 hover:shadow-md transition-all duration-200"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -370,17 +422,28 @@ export function Section() {
             </div>
           </form>
         </DialogBody>
-        <DialogFooter>
+        <DialogFooter className="bg-gray-50 rounded-b-lg">
           <Button
             variant="text"
             color="red"
             onClick={handleCancelAddSection}
-            className="mr-1"
+            className="mr-2 hover:bg-red-50 hover:scale-105 transition-all duration-200"
           >
-            <span>Cancel</span>
+            <span className="flex items-center gap-2">
+              <span>❌</span>
+              Cancel
+            </span>
           </Button>
-          <Button variant="gradient" color="gray" onClick={handleCreateSection}>
-            <span>Create Section</span>
+          <Button
+            variant="gradient"
+            color="orange"
+            onClick={handleCreateSection}
+            className="hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
+            <span className="flex items-center gap-2">
+              <span>➕</span>
+              Create Section
+            </span>
           </Button>
         </DialogFooter>
       </Dialog>

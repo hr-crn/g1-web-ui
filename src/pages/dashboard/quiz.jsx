@@ -49,31 +49,39 @@ export function Quiz() {
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-           <Typography variant="h6" color="white">
+        <CardHeader variant="gradient" color="gray" className="mb-8 p-6 bg-gradient-to-r from-purple-800 to-purple-900 shadow-xl">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <Typography variant="h6" color="white" className="font-bold">
+                📝
+              </Typography>
+            </div>
+            <Typography variant="h6" color="white" className="font-bold">
               Quiz Progress
             </Typography>
-          
+          </div>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
-            <thead>
+            <thead className="bg-gradient-to-r from-purple-50 to-purple-100">
               <tr>
-                {["quiz name", "actions"].map(
-                  (el) => (
-                    <th
-                      key={el}
-                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                {[
+                  { key: "quiz name", icon: "📝", label: "Quiz Name" },
+                  { key: "actions", icon: "⚡", label: "Actions" }
+                ].map((col) => (
+                  <th
+                    key={col.key}
+                    className="border-b-2 border-purple-100 py-4 px-5 text-left hover:bg-purple-100 transition-colors duration-200"
+                  >
+                    <Typography
+                      variant="small"
+                      className="text-xs font-bold uppercase text-purple-700 flex items-center gap-2"
                     >
-                      <Typography
-                        variant="small"
-                        className="text-[11px] font-bold uppercase text-blue-gray-400"
-                      >
-                        {el}
-                      </Typography>
-                    </th>
-                  )
-                )}
+                      <span>{col.icon}</span>
+                      {col.label}
+                    </Typography>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -86,14 +94,19 @@ export function Quiz() {
                   }`;
 
                   return (
-                    <tr key={quizName}>
+                    <tr
+                      key={quizName}
+                      className="hover:bg-purple-50 transition-all duration-200 cursor-pointer transform hover:scale-[1.01] hover:shadow-sm"
+                    >
                       <td className={className}>
                         <div className="flex items-center gap-4">
-                        
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                            📝
+                          </div>
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-bold"
+                            className="font-bold hover:text-purple-600 transition-colors duration-200"
                           >
                             {quizName}
                           </Typography>
@@ -105,19 +118,13 @@ export function Quiz() {
               
               
                       <td className={className}>
-                        <Typography
-                          as="a" // Render as an anchor tag for semantic correctness
-                          href={`/${getQuizSlug(quizName)}-score`} // Optional: for direct link/right-click copy
-                          onClick={(e) => { // Use onClick for React Router navigation
-                            e.preventDefault(); // Prevent default anchor tag behavior
-                            handleViewScores(quizName);
-                          }}
-                          variant="small"
-                          color="blue-gray"
-                          className="font-bold cursor-pointer hover:underline" // Add pointer and underline on hover
+                        <button
+                          onClick={() => handleViewScores(quizName)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
                         >
+                          <span>📊</span>
                           View Scores
-                        </Typography>
+                        </button>
                       </td>
                     </tr>
                   );
